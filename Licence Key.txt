@@ -1,0 +1,19 @@
+@echo off
+setlocal
+set "hostname=%computername%"
+set "licence_file=https://cdn.discordapp.com/attachments/1061389972764106803/1062449805231673395/Licence_Key.txt"
+
+rem Get the hostname from the licence file
+for /f "delims=" %%a in ('powershell -Command "[System.Net.WebClient]::new().DownloadString('%licence_file%')" ^| findstr /I /C:"%hostname%"') do set "licence_key=%%a"
+
+rem Check if the hostname was found in the licence file
+if not defined licence_key (
+    echo Error: No licence key found for hostname "%hostname%".
+    exit /b 1
+) else (
+    echo Licence key found: "%licence_key%"
+)
+
+rem Insert commands to run after the licence key check here
+
+echo Script execution finished.
